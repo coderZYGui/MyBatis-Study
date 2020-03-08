@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--日志技术-->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+
+    <!--1.配置数据库的环境-->
+    <environments default="development">
+        <!--开发环境:在以后事务管理器和连接池都是交给Spring框架来管理-->
+        <environment id="development">
+            <!--事务管理器-->
+            <transactionManager type="JDBC"/>
+            <!--连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="1111"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--2.关联映射文件-->
+    <!--
+        注意这里的路径是mybatis-config.xml文件找到UserMapper.xml的路径
+        如果在java的目录下,找不到UserMapper.xml
+     -->
+    <mappers>
+        <mapper resource="com/sunny/dao/UserMapper.xml"/>
+    </mappers>
+</configuration>

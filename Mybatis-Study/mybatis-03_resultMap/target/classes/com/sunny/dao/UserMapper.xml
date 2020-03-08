@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.dao.UserMapper">
+
+    <!--查询一共有多少用户-->
+    <select id="queryUserCount" resultType="int">
+        SELECT COUNT(id) FROM user1;
+    </select>
+
+    <!--
+        待解决问题: 结果集(表)中的列名和对象中的属性名称不匹配
+        解决方案: 使用resultMap元素
+        resultMap元素: 结果集对象的映射
+            id属性: 当前Mapper文件中resultMap的唯一名称
+            type属性: 把结果集中的每一行数据封装成什么类型的对象
+            子元素:
+               id元素: 功能和result一样,如果是主键,建议使用id元素,提升性能
+               result元素: 匹配对象中的哪一个属性对应表中的哪一个列
+    -->
+
+    <resultMap id="BaseResultMap" type="User">
+        <result column="u_id" property="id" />
+        <result column="u_name" property="name" />
+        <result column="u_pwd" property="pwd" />
+    </resultMap>
+
+    <select id="queryUserList" resultMap="BaseResultMap">
+        <!--SELECT u_id AS id, u_name AS name, u_pwd AS pwd FROM user1;-->
+        select u_id, u_name, u_pwd from user1;
+    </select>
+
+</mapper>
