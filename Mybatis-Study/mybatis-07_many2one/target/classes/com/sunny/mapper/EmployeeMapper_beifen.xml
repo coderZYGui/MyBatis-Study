@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.mapper.EmployeeMapper">
+
+    <!--当前得到的结果集和对象的属性不匹配-->
+    <resultMap id="BaseResultMap" type="Employee">
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="dept_id" property="dept.id"/>
+        <!--
+            额外SQL的配置方式
+            association元素: 配置单一元素(非数组、集合)的关联对象
+                property属性: 关联对象的属性名; 这里跟的就是Employee中的属性名称
+                javaType属性: 关联对象属性类型
+                select属性: 发送额外的SQL
+                column属性: 指定列的值,传递给SQL语句
+        -->
+        <association property="dept" javaType="Department"
+                     select="com.sunny.mapper.DepartmentMapper.getDeptById"
+                     column="dept_id"
+        />
+    </resultMap>
+
+    <!--根据id来查询用户信息-->
+    <select id="getUserById" resultMap="BaseResultMap">
+        <!--getUserById方法中的参数是普通类型,这里直接写id即可-->
+        SELECT id, name, dept_id FROM employee1 WHERE id = #{id}
+    </select>
+
+    <!--保存员工信息-->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        <!--save方法中的参数emp对象中取属性-->
+        INSERT INTO employee1(name, dept_id) VALUES (#{name}, #{dept.id})
+    </insert>
+
+
+    <!--查询所有用户信息-->
+    <select id="getAllUser" resultMap="BaseResultMap">
+        SELECT id, name, dept_id FROM employee1;
+    </select>
+
+</mapper>

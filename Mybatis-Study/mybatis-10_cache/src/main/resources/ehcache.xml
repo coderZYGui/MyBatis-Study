@@ -1,0 +1,35 @@
+<ehcache>
+    <diskStore path="java.io.tmpdir"/>
+
+
+	<!-- 
+		共同的配置：
+		1，maxElementsInMemory：该缓存池放在内存中最大的缓存对象个数；
+		2，eternal：是否永久有效，如果设置为true，内存中对象永不过期；
+		3，timeToIdleSeconds：缓存对象最大空闲时间，单位：秒；
+		4，timeToLiveSeconds：缓存对象最大生存时间，单位：秒；
+		5，overflowToDisk：当内存中对象超过最大值，是否临时保存到磁盘；
+		6，maxElementsOnDisk：能保存到磁盘上最大对象数量；
+		7，diskExpiryThreadIntervalSeconds:磁盘失效线程运行时间间隔，默认是120秒
+		8，memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。
+		    默认策略是LRU（最近最少使用），可以设置为FIFO（先进先出）或是LFU（较少使用）
+	
+	 -->
+	<!-- 默认的cache配置,相当于是公共的,如果没有设置使用哪一个缓存区域,就使用该默认的区域 -->
+    <defaultCache
+        maxElementsInMemory="10000"
+        eternal="false"
+        timeToIdleSeconds="3"
+        timeToLiveSeconds="5"
+        overflowToDisk="true"
+        />
+
+	<!-- 自定义区域的Cache, -->
+    <cache name="cn.wolfcode.mybatis.hello.mapper.TeacherMapper"
+        maxElementsInMemory="10000"
+        eternal="true"
+        timeToIdleSeconds="300"
+        timeToLiveSeconds="600"
+        overflowToDisk="true"
+        />
+</ehcache>
