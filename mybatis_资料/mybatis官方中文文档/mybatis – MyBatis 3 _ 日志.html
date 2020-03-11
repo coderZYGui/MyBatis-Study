@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://www.mybatis.org/mybatis-3/zh/logging.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh" lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Clinton Begin">
+    <meta name="author" content="Nan Lei">
+    <meta name="Date-Revision-yyyymmdd" content="20160517">
+    <meta http-equiv="Content-Language" content="zh">
+    <title>mybatis – MyBatis 3 | 日志</title>
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ 日志_files/apache-maven-fluido-1.5.min.css">
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ 日志_files/site.css">
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ 日志_files/print.css" media="print">
+
+      
+    <script type="text/javascript" src="./mybatis – MyBatis 3 _ 日志_files/apache-maven-fluido-1.5.min.js"></script>
+
+                      </head>
+        <body class="topBarDisabled">
+          
+        
+    
+        <div class="container-fluid">
+          <div id="banner">
+        <div class="pull-left">
+                                <div id="bannerLeft">
+                <h2>mybatis</h2>
+                </div>
+                      </div>
+        <div class="pull-right">                                <a href="http://www.mybatis.org/" id="bannerRight" title="MyBatis logo">
+                                                                                        <img src="./mybatis – MyBatis 3 _ 日志_files/mybatis-logo.png" alt="MyBatis logo">
+                </a>
+      </div>
+        <div class="clear"><hr></div>
+      </div>
+
+      <div id="breadcrumbs">
+        <ul class="breadcrumb">
+              
+                  <li id="publishDate">最近更新: 17 五月 2016
+                      <span class="divider">|</span>
+                   </li>
+                  <li id="projectVersion">版本: 3.4.1-SNAPSHOT
+                      </li>
+                      
+              
+      
+                            </ul>
+      </div>
+
+            
+      <div class="row-fluid">
+        <div id="leftColumn" class="span2">
+          <div class="well sidebar-nav">
+              
+                <ul class="nav nav-list">
+                    <li class="nav-header">参考文档</li>
+                              
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/index.html" title="简介">
+          <span class="none"></span>
+        简介</a>
+            </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/getting-started.html" title="入门">
+          <span class="none"></span>
+        入门</a>
+            </li>
+                                                                                                                                                                                                                  
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/configuration.html" title="XML配置">
+          <span class="icon-chevron-right"></span>
+        XML配置</a>
+                  </li>
+                                                                                                                                                            
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html" title="XML映射文件">
+          <span class="icon-chevron-right"></span>
+        XML映射文件</a>
+                  </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/dynamic-sql.html" title="动态SQL">
+          <span class="none"></span>
+        动态SQL</a>
+            </li>
+                                                                                    
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/java-api.html" title="Java API">
+          <span class="icon-chevron-right"></span>
+        Java API</a>
+                  </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/statement-builders.html" title="SQL语句构建器">
+          <span class="none"></span>
+        SQL语句构建器</a>
+            </li>
+                
+      <li class="active">
+  
+            <a href="http://www.mybatis.org/mybatis-3/zh/logging.html#"><span class="none"></span>日志</a>
+          </li>
+                              <li class="nav-header">项目文档</li>
+                                                                                                                                                                                                                                                                                      
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/project-info.html" title="项目信息">
+          <span class="icon-chevron-right"></span>
+        项目信息</a>
+                  </li>
+                                                                                                                                                                                                                                                                                          
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/project-reports.html" title="项目报表">
+          <span class="icon-chevron-right"></span>
+        项目报表</a>
+                  </li>
+            </ul>
+              
+                
+          <hr>
+
+           <div id="poweredBy">
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                             <a href="http://maven.apache.org/" title="构建依靠 Maven" class="poweredBy">
+        <img class="builtBy" alt="构建依靠 Maven" src="./mybatis – MyBatis 3 _ 日志_files/maven-feather.png">
+      </a>
+                  </div>
+          </div>
+        </div>
+        
+                
+        <div id="bodyColumn" class="span10">
+                                  
+            
+
+  
+    <div class="section">
+<h2><a name="Logging"></a>Logging</h2>
+      
+<p></p>
+      
+<p>
+        Mybatis内置的日志工厂提供日志功能，具体的日志实现有以下几种工具：
+      </p>
+      
+<ul>
+        
+<li>
+          SLF4J
+        </li>
+        
+<li>
+          Apache Commons Logging
+        </li>
+        
+<li>
+          Log4j 2
+        </li>
+        
+<li>
+          Log4j
+        </li>
+        
+<li>
+          JDK logging
+        </li>
+      </ul>
+      
+<p>
+        具体选择哪个日志实现工具由MyBatis的内置日志工厂确定。它会使用最先找到的（按上文列举的顺序查找）。
+        如果一个都未找到，日志功能就会被禁用。
+      </p>
+      
+<p>
+        不少应用服务器的classpath中已经包含Commons Logging，如Tomcat和WebShpere，
+        所以MyBatis会把它作为具体的日志实现。记住这点非常重要。这将意味着，在诸如
+       WebSphere的环境中——WebSphere提供了Commons Logging的私有实现，你的Log4J配置将被忽略。
+       	这种做法不免让人悲催，MyBatis怎么能忽略你的配置呢？事实上，因Commons Logging已经存
+       	在了，按照优先级顺序，Log4J自然就被忽略了！不过，如果你的应用部署在一个包含Commons Logging的环境，
+       	而你又想用其他的日志框架，你可以通过在MyBatis的配置文件mybatis-config.xml里面添加一项setting（配置）来选择一个不同的日志实现。
+      </p>
+      
+<div class="source"><pre class="prettyprint"><span class="tag">&lt;configuration&gt;</span><span class="pln">
+  </span><span class="tag">&lt;settings&gt;</span><span class="pln">
+    ...
+    </span><span class="tag">&lt;setting</span><span class="pln"> </span><span class="atn">name</span><span class="pun">=</span><span class="atv">"logImpl"</span><span class="pln"> </span><span class="atn">value</span><span class="pun">=</span><span class="atv">"LOG4J"</span><span class="tag">/&gt;</span><span class="pln">
+    ...
+  </span><span class="tag">&lt;/settings&gt;</span><span class="pln">
+</span><span class="tag">&lt;/configuration&gt;</span><span class="pln">
+      </span></pre></div>
+      
+<p>
+      	logImpl可选的值有：SLF4J、LOG4J、LOG4J2、JDK_LOGGING、COMMONS_LOGGING、STDOUT_LOGGING、NO_LOGGING
+      	或者是实现了接口<tt>org.apache.ibatis.logging.Log</tt>的类的完全限定类名，
+      	并且这个类的构造函数需要是以一个字符串（String类型）为参数的。
+      	（可以参考org.apache.ibatis.logging.slf4j.Slf4jImpl.java的实现）
+      </p>
+      
+<p>
+      	你根据需要调用如下的某一方法：
+      </p>
+      
+<div class="source"><pre class="prettyprint"><span class="pln">org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="typ">LogFactory</span><span class="pun">.</span><span class="pln">useSlf4jLogging</span><span class="pun">();</span><span class="pln">
+org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="typ">LogFactory</span><span class="pun">.</span><span class="pln">useLog4JLogging</span><span class="pun">();</span><span class="pln">
+org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="typ">LogFactory</span><span class="pun">.</span><span class="pln">useJdkLogging</span><span class="pun">();</span><span class="pln">
+org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="typ">LogFactory</span><span class="pun">.</span><span class="pln">useCommonsLogging</span><span class="pun">();</span><span class="pln">
+org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">logging</span><span class="pun">.</span><span class="typ">LogFactory</span><span class="pun">.</span><span class="pln">useStdOutLogging</span><span class="pun">();</span></pre></div>
+      
+<p>如果的确需要调用以上的某个方法，请在其他所有MyBatis方法之前调用它。另外，只有在相应日志实现中存在
+        的前提下，调用对应的方法才是有意义的，否则MyBatis一概忽略。如你环境中并不存在Log4J，你却调用了
+        相应的方法，MyBatis就会忽略这一调用，代之默认的查找顺序查找日志实现。
+      </p>
+      
+<p>关于SLF4J、Apache Commons Logging、Apache Log4J和JDK Logging的API介绍已经超出本文档的范围。
+        不过，下面的例子可以作为一个快速入门。关于这些日志框架的更多信息，可以参考以下链接：
+      </p>
+      
+<ul>
+        
+<li>
+          <a class="externalLink" href="http://commons.apache.org/logging">Apache Commons Logging</a>
+        </li>
+        
+<li>
+          <a class="externalLink" href="http://logging.apache.org/log4j/">Apache Log4j</a>
+        </li>
+        
+<li>
+          <a class="externalLink" href="http://java.sun.com/j2se/1.4.1/docs/guide/util/logging/">JDK Logging API</a>
+        </li>
+      </ul>
+      
+<div class="section">
+<h3><a name="Logging_Configuration"></a>Logging Configuration</h3>
+        
+<p>MyBatis可以对包、类、命名空间和全限定的语句记录日志。
+        </p>
+        
+<p>具体怎么做，视使用的日志框架而定，这里以Log4J为例。配置日志功能非常简单：添加几个配置文件，
+            如log4j.properties,再添加个jar包，如log4j.jar。下面是具体的例子，共两个步骤：
+        </p>
+        
+<p></p>
+        
+<div class="section">
+<h4><a name="a1__Log4J__jar_"></a>
+          步骤1： 添加 Log4J 的 jar 包
+        </h4>
+        
+<p>因为采用Log4J，要确保在应用中对应的jar包是可用的。要满足这一点，只要将jar包添加到应用的classpath中即可。
+         Log4J的jar包可以从上面的链接中下载。
+        </p>
+        
+<p>具体而言，对于web或企业应用，需要将<tt>log4j.jar</tt> 添加到<tt>WEB-INF/lib</tt> 目录； 对于独立应用，
+            可以将它添加到jvm的 <tt>-classpath</tt>启动参数中。
+        </p>
+        
+<p></p>
+        </div>
+<div class="section">
+<h4><a name="a2Log4J"></a>
+          步骤2：配置Log4J
+        </h4>
+        
+<p>配置Log4J比较简单， 比如需要记录这个mapper接口的日志:
+        </p>
+        
+<div class="source"><pre class="prettyprint"><span class="kwd">package</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">;</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="kwd">interface</span><span class="pln"> </span><span class="typ">BlogMapper</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="lit">@Select</span><span class="pun">(</span><span class="str">"SELECT * FROM blog WHERE id = #{id}"</span><span class="pun">)</span><span class="pln">
+  </span><span class="typ">Blog</span><span class="pln"> selectBlog</span><span class="pun">(</span><span class="kwd">int</span><span class="pln"> id</span><span class="pun">);</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+        
+<p>只要在应用的classpath中创建一个名称为<tt>log4j.properties</tt>的文件，
+            文件的具体内容如下：
+        </p>
+        
+<div class="source"><pre class="prettyprint"><span class="com"># Global logging configuration</span><span class="pln">
+log4j</span><span class="pun">.</span><span class="pln">rootLogger</span><span class="pun">=</span><span class="pln">ERROR</span><span class="pun">,</span><span class="pln"> stdout
+</span><span class="com"># MyBatis logging configuration...</span><span class="pln">
+log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">.</span><span class="typ">BlogMapper</span><span class="pun">=</span><span class="pln">TRACE
+</span><span class="com"># Console output...</span><span class="pln">
+log4j</span><span class="pun">.</span><span class="pln">appender</span><span class="pun">.</span><span class="pln">stdout</span><span class="pun">=</span><span class="pln">org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">log4j</span><span class="pun">.</span><span class="typ">ConsoleAppender</span><span class="pln">
+log4j</span><span class="pun">.</span><span class="pln">appender</span><span class="pun">.</span><span class="pln">stdout</span><span class="pun">.</span><span class="pln">layout</span><span class="pun">=</span><span class="pln">org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">log4j</span><span class="pun">.</span><span class="typ">PatternLayout</span><span class="pln">
+log4j</span><span class="pun">.</span><span class="pln">appender</span><span class="pun">.</span><span class="pln">stdout</span><span class="pun">.</span><span class="pln">layout</span><span class="pun">.</span><span class="typ">ConversionPattern</span><span class="pun">=%</span><span class="lit">5p</span><span class="pln"> </span><span class="pun">[%</span><span class="pln">t</span><span class="pun">]</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> </span><span class="pun">%</span><span class="pln">m</span><span class="pun">%</span><span class="pln">n</span></pre></div>
+        
+<p>添加以上配置后，Log4J就会把
+          <tt>org.mybatis.example.BlogMapper</tt>
+          的详细执行日志记录下来，对于应用中的其它类则仅仅记录错误信息。
+        </p>
+        
+<p>也可以将日志从整个mapper接口级别调整到到语句级别，从而实现更细粒度的控制。如下配置只记录
+          <tt>selectBlog</tt> 语句的日志：
+        </p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="pln">log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">.</span><span class="typ">BlogMapper</span><span class="pun">.</span><span class="pln">selectBlog</span><span class="pun">=</span><span class="pln">TRACE</span></pre></div>
+        
+        
+<p>与此相对，可以对一组mapper接口记录日志，只要对mapper接口所在的包开启日志功能即可：</p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="pln">log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">=</span><span class="pln">TRACE</span></pre></div>
+        
+        
+<p>某些查询可能会返回大量的数据，只想记录其执行的SQL语句该怎么办？为此，Mybatis中SQL语
+             句的日志级别被设为DEBUG（JDK Logging中为FINE），结果日志的级别为TRACE（JDK 
+           Logging中为FINER)。所以，只要将日志级别调整为DEBUG即可达到目的：
+        </p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="pln">log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">=</span><span class="pln">DEBUG</span></pre></div>
+        
+        
+<p>要记录日志的是类似下面的mapper文件而不是mapper接口又该怎么呢？
+        </p>
+
+      
+<div class="source"><pre class="prettyprint"><span class="pun">&lt;?</span><span class="pln">xml version</span><span class="pun">=</span><span class="str">"1.0"</span><span class="pln"> encoding</span><span class="pun">=</span><span class="str">"UTF-8"</span><span class="pln"> </span><span class="pun">?&gt;</span><span class="pln">
+</span><span class="dec">&lt;!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</span><span class="pln">
+</span><span class="tag">&lt;mapper</span><span class="pln"> </span><span class="atn">namespace</span><span class="pun">=</span><span class="atv">"org.mybatis.example.BlogMapper"</span><span class="tag">&gt;</span><span class="pln">
+  </span><span class="tag">&lt;select</span><span class="pln"> </span><span class="atn">id</span><span class="pun">=</span><span class="atv">"selectBlog"</span><span class="pln"> </span><span class="atn">resultType</span><span class="pun">=</span><span class="atv">"Blog"</span><span class="tag">&gt;</span><span class="pln">
+    select * from Blog where id = #{id}
+  </span><span class="tag">&lt;/select&gt;</span><span class="pln">
+</span><span class="tag">&lt;/mapper&gt;</span></pre></div>
+
+		
+<p>对这个文件记录日志，只要对命名空间增加日志记录功能即可：
+		</p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="pln">log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">.</span><span class="typ">BlogMapper</span><span class="pun">=</span><span class="pln">TRACE</span></pre></div>
+
+		
+<p>	进一步，要记录具体语句的日志可以这样做：
+		</p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="pln">log4j</span><span class="pun">.</span><span class="pln">logger</span><span class="pun">.</span><span class="pln">org</span><span class="pun">.</span><span class="pln">mybatis</span><span class="pun">.</span><span class="pln">example</span><span class="pun">.</span><span class="typ">BlogMapper</span><span class="pun">.</span><span class="pln">selectBlog</span><span class="pun">=</span><span class="pln">TRACE</span></pre></div>
+
+		
+<p>看到了吧，两种配置没差别！
+		</p>
+
+        
+<p>配置文件<tt>log4j.properties</tt>的余下内容是针对日志格式的，这一内容已经超出本
+            文档范围。关于Log4J的更多内容，可以参考Log4J的网站。不过，可以简单试一下看看，不同的配置
+            会产生什么不一样的效果。
+        </p>
+      </div></div>
+    </div>
+  
+
+                  </div>
+            </div>
+          </div>
+
+    <hr>
+
+    <footer>
+            <div class="container-fluid">
+                      <div class="row-fluid">
+                                      <p>Copyright ©                    2009–2016
+                        <a href="http://www.mybatis.org/">MyBatis.org</a>.
+            All rights reserved.    
+      </p>
+                </div>
+
+        
+                </div>
+    </footer>
+        
+
+</body></html>
