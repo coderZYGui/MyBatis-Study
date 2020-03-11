@@ -1,6 +1,7 @@
 # MyBatis-Study
 
 ## <span id="j0">目录</span>
+这里是部分笔记,全部笔记请点击[链接](https://blog.csdn.net/m0_37989980/article/details/103987924)
 
 - [一、走进MyBatis](#j1)
 	- [1.1、什么是框架?](#j2)
