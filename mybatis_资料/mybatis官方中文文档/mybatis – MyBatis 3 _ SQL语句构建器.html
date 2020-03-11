@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<!-- saved from url=(0059)http://www.mybatis.org/mybatis-3/zh/statement-builders.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh" lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Clinton Begin">
+    <meta name="author" content="Nan Lei">
+    <meta name="Date-Revision-yyyymmdd" content="20160517">
+    <meta http-equiv="Content-Language" content="zh">
+    <title>mybatis – MyBatis 3 | SQL语句构建器</title>
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ SQL语句构建器_files/apache-maven-fluido-1.5.min.css">
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ SQL语句构建器_files/site.css">
+    <link rel="stylesheet" href="./mybatis – MyBatis 3 _ SQL语句构建器_files/print.css" media="print">
+
+      
+    <script type="text/javascript" src="./mybatis – MyBatis 3 _ SQL语句构建器_files/apache-maven-fluido-1.5.min.js"></script>
+
+                      </head>
+        <body class="topBarDisabled">
+          
+        
+    
+        <div class="container-fluid">
+          <div id="banner">
+        <div class="pull-left">
+                                <div id="bannerLeft">
+                <h2>mybatis</h2>
+                </div>
+                      </div>
+        <div class="pull-right">                                <a href="http://www.mybatis.org/" id="bannerRight" title="MyBatis logo">
+                                                                                        <img src="./mybatis – MyBatis 3 _ SQL语句构建器_files/mybatis-logo.png" alt="MyBatis logo">
+                </a>
+      </div>
+        <div class="clear"><hr></div>
+      </div>
+
+      <div id="breadcrumbs">
+        <ul class="breadcrumb">
+              
+                  <li id="publishDate">最近更新: 17 五月 2016
+                      <span class="divider">|</span>
+                   </li>
+                  <li id="projectVersion">版本: 3.4.1-SNAPSHOT
+                      </li>
+                      
+              
+      
+                            </ul>
+      </div>
+
+            
+      <div class="row-fluid">
+        <div id="leftColumn" class="span2">
+          <div class="well sidebar-nav">
+              
+                <ul class="nav nav-list">
+                    <li class="nav-header">参考文档</li>
+                              
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/index.html" title="简介">
+          <span class="none"></span>
+        简介</a>
+            </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/getting-started.html" title="入门">
+          <span class="none"></span>
+        入门</a>
+            </li>
+                                                                                                                                                                                                                  
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/configuration.html" title="XML配置">
+          <span class="icon-chevron-right"></span>
+        XML配置</a>
+                  </li>
+                                                                                                                                                            
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html" title="XML映射文件">
+          <span class="icon-chevron-right"></span>
+        XML映射文件</a>
+                  </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/dynamic-sql.html" title="动态SQL">
+          <span class="none"></span>
+        动态SQL</a>
+            </li>
+                                                                                    
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/java-api.html" title="Java API">
+          <span class="icon-chevron-right"></span>
+        Java API</a>
+                  </li>
+                
+      <li class="active">
+  
+            <a href="http://www.mybatis.org/mybatis-3/zh/statement-builders.html#"><span class="none"></span>SQL语句构建器</a>
+          </li>
+                
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/logging.html" title="日志">
+          <span class="none"></span>
+        日志</a>
+            </li>
+                              <li class="nav-header">项目文档</li>
+                                                                                                                                                                                                                                                                                      
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/project-info.html" title="项目信息">
+          <span class="icon-chevron-right"></span>
+        项目信息</a>
+                  </li>
+                                                                                                                                                                                                                                                                                          
+      <li>
+  
+                          <a href="http://www.mybatis.org/mybatis-3/zh/project-reports.html" title="项目报表">
+          <span class="icon-chevron-right"></span>
+        项目报表</a>
+                  </li>
+            </ul>
+              
+                
+          <hr>
+
+           <div id="poweredBy">
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                            <div class="clear"></div>
+                             <a href="http://maven.apache.org/" title="构建依靠 Maven" class="poweredBy">
+        <img class="builtBy" alt="构建依靠 Maven" src="./mybatis – MyBatis 3 _ SQL语句构建器_files/maven-feather.png">
+      </a>
+                  </div>
+          </div>
+        </div>
+        
+                
+        <div id="bodyColumn" class="span10">
+                                  
+            
+
+  
+    <div class="section">
+<h2><a name="SQL"></a>SQL语句构建器类</h2>
+      
+<div class="section">
+<h3><a name="a"></a>问题</h3>
+        
+<p>Java程序员面对的最痛苦的事情之一就是在Java代码中嵌入SQL语句。这么来做通常是由于SQL语句需要动态来生成-否则可以将它们放到外部文件或者存储过程中。正如你已经看到的那样，MyBatis在它的XML映射特性中有一个强大的动态SQL生成方案。但有时在Java代码内部创建SQL语句也是必要的。此时，MyBatis有另外一个特性可以帮到你，在减少典型的加号,引号,新行,格式化问题和嵌入条件来处理多余的逗号或 AND 连接词之前。事实上，在Java代码中来动态生成SQL代码就是一场噩梦。例如：
+        </p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="typ">String</span><span class="pln"> sql </span><span class="pun">=</span><span class="pln"> </span><span class="str">"SELECT P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME, "</span><span class="pln">
+</span><span class="str">"P.LAST_NAME,P.CREATED_ON, P.UPDATED_ON "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"FROM PERSON P, ACCOUNT A "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"INNER JOIN DEPARTMENT D on D.ID = P.DEPARTMENT_ID "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"INNER JOIN COMPANY C on D.COMPANY_ID = C.ID "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"WHERE (P.ID = A.ID AND P.FIRST_NAME like ?) "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"OR (P.LAST_NAME like ?) "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"GROUP BY P.ID "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"HAVING (P.LAST_NAME like ?) "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"OR (P.FIRST_NAME like ?) "</span><span class="pln"> </span><span class="pun">+</span><span class="pln">
+</span><span class="str">"ORDER BY P.ID, P.FULL_NAME"</span><span class="pun">;</span></pre></div>
+      </div>
+      
+<div class="section">
+<h3><a name="The_Solution"></a>The Solution</h3>
+      
+<p>MyBatis 3提供了方便的工具类来帮助解决该问题。使用SQL类，简单地创建一个实例来调用方法生成SQL语句。上面示例中的问题就像重写SQL类那样：
+      </p>
+
+      
+<div class="source"><pre class="prettyprint"><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> selectPersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    SELECT</span><span class="pun">(</span><span class="str">"P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME"</span><span class="pun">);</span><span class="pln">
+    SELECT</span><span class="pun">(</span><span class="str">"P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON"</span><span class="pun">);</span><span class="pln">
+    FROM</span><span class="pun">(</span><span class="str">"PERSON P"</span><span class="pun">);</span><span class="pln">
+    FROM</span><span class="pun">(</span><span class="str">"ACCOUNT A"</span><span class="pun">);</span><span class="pln">
+    INNER_JOIN</span><span class="pun">(</span><span class="str">"DEPARTMENT D on D.ID = P.DEPARTMENT_ID"</span><span class="pun">);</span><span class="pln">
+    INNER_JOIN</span><span class="pun">(</span><span class="str">"COMPANY C on D.COMPANY_ID = C.ID"</span><span class="pun">);</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"P.ID = A.ID"</span><span class="pun">);</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"P.FIRST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+    OR</span><span class="pun">();</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"P.LAST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+    GROUP_BY</span><span class="pun">(</span><span class="str">"P.ID"</span><span class="pun">);</span><span class="pln">
+    HAVING</span><span class="pun">(</span><span class="str">"P.LAST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+    OR</span><span class="pun">();</span><span class="pln">
+    HAVING</span><span class="pun">(</span><span class="str">"P.FIRST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+    ORDER_BY</span><span class="pun">(</span><span class="str">"P.ID"</span><span class="pun">);</span><span class="pln">
+    ORDER_BY</span><span class="pun">(</span><span class="str">"P.FULL_NAME"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+
+      
+<p>该例中有什么特殊之处？当你仔细看时，那不用担心偶然间重复出现的"AND"关键字，或者在"WHERE"和"AND"之间的选择，抑或什么都不选。该SQL类非常注意"WHERE"应该出现在何处，哪里又应该使用"AND"，还有所有的字符串链接。
+        </p>
+
+      </div>
+
+      
+<div class="section">
+<h3><a name="SQL"></a>SQL类</h3>
+
+        
+<p>这里给出一些示例：</p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="com">// Anonymous inner class</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> deletePersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    DELETE_FROM</span><span class="pun">(</span><span class="str">"PERSON"</span><span class="pun">);</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"ID = #{id}"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="com">// Builder / Fluent style</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> insertPersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="typ">String</span><span class="pln"> sql </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">INSERT_INTO</span><span class="pun">(</span><span class="str">"PERSON"</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">VALUES</span><span class="pun">(</span><span class="str">"ID, FIRST_NAME"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#{id}, #{firstName}"</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">VALUES</span><span class="pun">(</span><span class="str">"LAST_NAME"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#{lastName}"</span><span class="pun">)</span><span class="pln">
+    </span><span class="pun">.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> sql</span><span class="pun">;</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="com">// With conditionals (note the final parameters, required for the anonymous inner class to access them)</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> selectPersonLike</span><span class="pun">(</span><span class="kwd">final</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> id</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> firstName</span><span class="pun">,</span><span class="pln"> </span><span class="kwd">final</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> lastName</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    SELECT</span><span class="pun">(</span><span class="str">"P.ID, P.USERNAME, P.PASSWORD, P.FIRST_NAME, P.LAST_NAME"</span><span class="pun">);</span><span class="pln">
+    FROM</span><span class="pun">(</span><span class="str">"PERSON P"</span><span class="pun">);</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">id </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+      WHERE</span><span class="pun">(</span><span class="str">"P.ID like #{id}"</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">firstName </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+      WHERE</span><span class="pun">(</span><span class="str">"P.FIRST_NAME like #{firstName}"</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    </span><span class="kwd">if</span><span class="pln"> </span><span class="pun">(</span><span class="pln">lastName </span><span class="pun">!=</span><span class="pln"> </span><span class="kwd">null</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+      WHERE</span><span class="pun">(</span><span class="str">"P.LAST_NAME like #{lastName}"</span><span class="pun">);</span><span class="pln">
+    </span><span class="pun">}</span><span class="pln">
+    ORDER_BY</span><span class="pun">(</span><span class="str">"P.LAST_NAME"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> deletePersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    DELETE_FROM</span><span class="pun">(</span><span class="str">"PERSON"</span><span class="pun">);</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"ID = #{id}"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> insertPersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    INSERT_INTO</span><span class="pun">(</span><span class="str">"PERSON"</span><span class="pun">);</span><span class="pln">
+    VALUES</span><span class="pun">(</span><span class="str">"ID, FIRST_NAME"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#{id}, #{firstName}"</span><span class="pun">);</span><span class="pln">
+    VALUES</span><span class="pun">(</span><span class="str">"LAST_NAME"</span><span class="pun">,</span><span class="pln"> </span><span class="str">"#{lastName}"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> updatePersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> </span><span class="kwd">new</span><span class="pln"> SQL</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{{</span><span class="pln">
+    UPDATE</span><span class="pun">(</span><span class="str">"PERSON"</span><span class="pun">);</span><span class="pln">
+    SET</span><span class="pun">(</span><span class="str">"FIRST_NAME = #{firstName}"</span><span class="pun">);</span><span class="pln">
+    WHERE</span><span class="pun">(</span><span class="str">"ID = #{id}"</span><span class="pun">);</span><span class="pln">
+  </span><span class="pun">}}.</span><span class="pln">toString</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span></pre></div>
+
+        
+<table border="0" class="table table-striped">
+          <thead>
+            
+<tr class="a">
+              
+<th>方法</th>
+              
+<th>描述</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+<tr class="b">
+              
+<td>
+                <tt>SELECT(String)</tt>
+              </td>
+              
+<td>开始或插入到
+                <tt>SELECT</tt>子句。
+                可以被多次调用，参数也会添加到
+                <tt>SELECT</tt>子句。
+                参数通常使用逗号分隔的列名和别名列表，但也可以是数据库驱动程序接受的任意类型。
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>SELECT_DISTINCT(String)</tt>
+              </td>
+              
+<td>开始或插入到
+                <tt>SELECT</tt>子句，
+                也可以插入
+                <tt>DISTINCT</tt>关键字到生成的查询语句中。
+                可以被多次调用，参数也会添加到
+                <tt>SELECT</tt>子句。
+                 参数通常使用逗号分隔的列名和别名列表，但也可以是数据库驱动程序接受的任意类型。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>FROM(String)</tt>
+              </td>
+              
+<td>开始或插入到
+                <tt>FROM</tt>子句。
+                可以被多次调用，参数也会添加到
+                <tt>FROM</tt>子句。
+                参数通常是表名或别名，也可以是数据库驱动程序接受的任意类型。
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                
+<ul>
+                  
+<li>
+                    <tt>JOIN(String)</tt>
+                  </li>
+                  
+<li>
+                    <tt>INNER_JOIN(String)</tt>
+                  </li>
+                  
+<li>
+                    <tt>LEFT_OUTER_JOIN(String)</tt>
+                  </li>
+                  
+<li>
+                    <tt>RIGHT_OUTER_JOIN(String)</tt>
+                  </li>
+                </ul>
+              </td>
+              
+<td>基于调用的方法，添加新的合适类型的
+                <tt>JOIN</tt>子句。
+				参数可以包含由列命和join on条件组合成标准的join。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>WHERE(String)</tt>
+              </td>
+              
+<td>插入新的
+                <tt>WHERE</tt>子句条件，
+                由<tt>AND</tt>链接。可以多次被调用，每次都由<tt>AND</tt>来链接新条件。使用
+                <tt>OR()</tt>
+                来分隔<tt>OR</tt>。
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>OR()</tt>
+              </td>
+              
+<td>使用<tt>OR</tt>来分隔当前的
+                <tt>WHERE</tt>子句条件。
+				可以被多次调用，但在一行中多次调用或生成不稳定的<tt>SQL</tt>。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>AND()</tt>
+              </td>
+              
+<td>使用<tt>AND</tt>来分隔当前的
+                <tt>WHERE</tt>子句条件。
+				可以被多次调用，但在一行中多次调用或生成不稳定的<tt>SQL</tt>。因为
+                <tt>WHERE</tt>
+                和
+                <tt>HAVING</tt>
+                二者都会自动链接
+                <tt>AND</tt>, 这是非常罕见的方法，只是为了完整性才被使用。
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>GROUP_BY(String)</tt>
+              </td>
+              
+<td>插入新的
+                <tt>GROUP BY</tt>子句元素，由逗号连接。
+				可以被多次调用，每次都由逗号连接新的条件。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>HAVING(String)</tt>
+              </td>
+              
+<td>插入新的
+                <tt>HAVING</tt>子句条件。
+                由AND连接。可以被多次调用，每次都由<tt>AND</tt>来连接新的条件。使用
+                <tt>OR()</tt>
+                来分隔<tt>OR</tt>.
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>ORDER_BY(String)</tt>
+              </td>
+              
+<td>插入新的
+                <tt>ORDER BY</tt>子句元素，
+                由逗号连接。可以多次被调用，每次由逗号连接新的条件。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>DELETE_FROM(String)</tt>
+              </td>
+              
+<td>开始一个delete语句并指定需要从哪个表删除的表名。通常它后面都会跟着WHERE语句！
+              </td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>INSERT_INTO(String)</tt>
+              </td>
+              
+<td>开始一个insert语句并指定需要插入数据的表名。后面都会跟着一个或者多个VALUES()。
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>SET(String)</tt>
+              </td>
+              
+<td>针对update语句，插入到"set"列表中</td>
+            </tr>
+            
+<tr class="a">
+              
+<td>
+                <tt>UPDATE(String)</tt>
+              </td>
+              
+<td>开始一个update语句并指定需要更新的表明。后面都会跟着一个或者多个SET()，通常也会有一个WHERE()。 
+              </td>
+            </tr>
+            
+<tr class="b">
+              
+<td>
+                <tt>VALUES(String, String)</tt>
+              </td>
+              
+<td>插入到insert语句中。第一个参数是要插入的列名，第二个参数则是该列的值。
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      
+<div class="section">
+<h3><a name="SqlBuilder__SelectBuilder_"></a>SqlBuilder 和 SelectBuilder (已经废弃)</h3>
+        
+<p>
+          在3.2版本之前，我们使用了一点不同的做法，通过实现ThreadLocal变量来掩盖一些导致Java DSL麻烦的语言限制。但这种方式已经废弃了，现代的框架都欢迎人们使用构建器类型和匿名内部类的想法。因此，SelectBuilder 和 SqlBuilder 类都被废弃了。
+        </p>
+        
+<p>
+          下面的方法仅仅适用于废弃的SqlBuilder 和 SelectBuilder 类。
+        </p>
+        
+<table border="0" class="table table-striped">
+        <thead>
+          
+<tr class="a">
+            
+<th>方法</th>
+            
+<th>描述</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+<tr class="b">
+          
+<td>
+            <tt>BEGIN()</tt>
+            /
+            <tt>RESET()</tt>
+          </td>
+          
+<td>这些方法清空SelectBuilder类的ThreadLocal状态，并且准备一个新的构建语句。开始新的语句时，
+            <tt>BEGIN()</tt>读取得最好。
+			由于一些原因（在某些条件下，也许是逻辑需要一个完全不同的语句），在执行中清理语句
+            <tt>RESET()</tt>读取得最好。
+          </td>
+        </tr>
+        
+<tr class="a">
+          
+<td>
+            <tt>SQL()</tt>
+          </td>
+          
+<td>返回生成的
+            <tt>SQL()</tt>
+            并重置
+            <tt>SelectBuilder</tt>
+            状态 (好像
+            <tt>BEGIN()</tt>
+            或
+            <tt>RESET()</tt>
+            被调用了).
+            因此，该方法只能被调用一次！
+          </td>
+        </tr>
+        </tbody>
+        </table>
+
+        
+<p>
+          SelectBuilder 和 SqlBuilder 类并不神奇，但是知道它们如何工作也是很重要的。
+          SelectBuilder 使用 SqlBuilder 使用了静态导入和ThreadLocal变量的组合来开启整洁语法，可以很容易地和条件交错。使用它们，静态导入类的方法即可，就像这样(一个或其它，并非两者):
+        </p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="kwd">import</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">jdbc</span><span class="pun">.</span><span class="typ">SelectBuilder</span><span class="pun">.*;</span></pre></div>
+        
+<div class="source"><pre class="prettyprint"><span class="kwd">import</span><span class="pln"> </span><span class="kwd">static</span><span class="pln"> org</span><span class="pun">.</span><span class="pln">apache</span><span class="pun">.</span><span class="pln">ibatis</span><span class="pun">.</span><span class="pln">jdbc</span><span class="pun">.</span><span class="typ">SqlBuilder</span><span class="pun">.*;</span></pre></div>
+
+        
+<p>这就允许像下面这样来创建方法：</p>
+
+        
+<div class="source"><pre class="prettyprint"><span class="com">/* DEPRECATED */</span><span class="pln">
+</span><span class="kwd">public</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> selectBlogsSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">BEGIN</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Clears ThreadLocal variable</span><span class="pln">
+  SELECT</span><span class="pun">(</span><span class="str">"*"</span><span class="pun">);</span><span class="pln">
+  FROM</span><span class="pun">(</span><span class="str">"BLOG"</span><span class="pun">);</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> SQL</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+        </span></pre></div>
+
+        
+<div class="source"><pre class="prettyprint"><span class="com">/* DEPRECATED */</span><span class="pln">
+</span><span class="kwd">private</span><span class="pln"> </span><span class="typ">String</span><span class="pln"> selectPersonSql</span><span class="pun">()</span><span class="pln"> </span><span class="pun">{</span><span class="pln">
+  </span><span class="kwd">BEGIN</span><span class="pun">();</span><span class="pln"> </span><span class="com">// Clears ThreadLocal variable</span><span class="pln">
+  SELECT</span><span class="pun">(</span><span class="str">"P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME"</span><span class="pun">);</span><span class="pln">
+  SELECT</span><span class="pun">(</span><span class="str">"P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON"</span><span class="pun">);</span><span class="pln">
+  FROM</span><span class="pun">(</span><span class="str">"PERSON P"</span><span class="pun">);</span><span class="pln">
+  FROM</span><span class="pun">(</span><span class="str">"ACCOUNT A"</span><span class="pun">);</span><span class="pln">
+  INNER_JOIN</span><span class="pun">(</span><span class="str">"DEPARTMENT D on D.ID = P.DEPARTMENT_ID"</span><span class="pun">);</span><span class="pln">
+  INNER_JOIN</span><span class="pun">(</span><span class="str">"COMPANY C on D.COMPANY_ID = C.ID"</span><span class="pun">);</span><span class="pln">
+  WHERE</span><span class="pun">(</span><span class="str">"P.ID = A.ID"</span><span class="pun">);</span><span class="pln">
+  WHERE</span><span class="pun">(</span><span class="str">"P.FIRST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+  OR</span><span class="pun">();</span><span class="pln">
+  WHERE</span><span class="pun">(</span><span class="str">"P.LAST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+  GROUP_BY</span><span class="pun">(</span><span class="str">"P.ID"</span><span class="pun">);</span><span class="pln">
+  HAVING</span><span class="pun">(</span><span class="str">"P.LAST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+  OR</span><span class="pun">();</span><span class="pln">
+  HAVING</span><span class="pun">(</span><span class="str">"P.FIRST_NAME like ?"</span><span class="pun">);</span><span class="pln">
+  ORDER_BY</span><span class="pun">(</span><span class="str">"P.ID"</span><span class="pun">);</span><span class="pln">
+  ORDER_BY</span><span class="pun">(</span><span class="str">"P.FULL_NAME"</span><span class="pun">);</span><span class="pln">
+  </span><span class="kwd">return</span><span class="pln"> SQL</span><span class="pun">();</span><span class="pln">
+</span><span class="pun">}</span><span class="pln">
+        </span></pre></div>
+
+      </div>
+
+
+    </div>
+  
+
+
+                  </div>
+            </div>
+          </div>
+
+    <hr>
+
+    <footer>
+            <div class="container-fluid">
+                      <div class="row-fluid">
+                                      <p>Copyright ©                    2009–2016
+                        <a href="http://www.mybatis.org/">MyBatis.org</a>.
+            All rights reserved.    
+      </p>
+                </div>
+
+        
+                </div>
+    </footer>
+        
+
+</body></html>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.dao.EmployeeMapper">
+
+    <!--查询所有用户的信息-->
+    <select id="queryAllUser" resultType="Employee">
+        SELECT * FROM employee;
+    </select>
+
+    <!--查询工资大于等于1000的员工-->
+    <select id="query1" resultType="Employee">
+        SELECT * FROM employee
+        <if test="minSalary!=null">
+            WHERE salary >= #{minSalary}
+        </if>
+    </select>
+
+    <!--查询工资在1000-2000之间的员工-->
+    <select id="query2" resultType="Employee">
+        SELECT * FROM employee WHERE 1 = 1
+        <if test="minSalary!=null">
+            AND salary >= #{minSalary}
+        </if>
+        <if test="maxSalary!=null">
+            AND salary &lt;= #{maxSalary};
+        </if>
+    </select>
+
+    <!--查询指定部门的员工信息-->
+    <!-- <select id="query3" resultType="Employee">
+         SELECT * FROM employee WHERE 1 = 1
+         <if test="minSalary!=null">
+             AND salary >= #{minSalary}
+         </if>
+         <if test="maxSalary!=null">
+             AND salary &lt;= #{maxSalary}
+         </if>
+         &lt;!&ndash;假如下拉列表获取的部门id,"所在部门"这个要排除,设为-1&ndash;&gt;
+         &lt;!&ndash;<if test="deptId > 0">
+             AND deptId = #{deptId}
+         </if>&ndash;&gt;
+         <choose> &lt;!&ndash;相当于switch判断&ndash;&gt;
+             <when test="deptId > 0">AND deptId = #{deptId}</when>
+             <otherwise>AND deptId IS NOT NULL</otherwise>
+         </choose>
+     </select>-->
+
+    <!--
+        where元素: 判断查询条件是否有WHERE关键字,如果没有,则在第一个查询条件之前,插入一个WHERE,
+            如果发现查询条件AND 或者 OR开头,也会把第一个查询条件前的AND/OR 替换成WHERE
+     -->
+    <select id="query3" resultType="Employee">
+        SELECT * FROM employee
+        <!--<where>
+            <if test="minSalary!=null">
+                AND salary >= #{minSalary}
+            </if>
+            <if test="maxSalary!=null">
+                AND salary &lt;= #{maxSalary}
+            </if>
+            <choose> &lt;!&ndash;相当于switch判断&ndash;&gt;
+                <when test="deptId > 0">AND deptId = #{deptId}</when>
+                <otherwise>AND deptId IS NOT NULL</otherwise>
+            </choose>
+        </where>-->
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="minSalary!=null">
+                AND salary >= #{minSalary}
+            </if>
+            <if test="maxSalary!=null">
+                AND salary &lt;= #{maxSalary}
+            </if>
+            <choose> <!--相当于switch判断-->
+                <when test="deptId > 0">AND deptId = #{deptId}</when>
+                <otherwise>AND deptId IS NOT NULL</otherwise>
+            </choose>
+        </trim>
+    </select>
+
+    <!--使用set元素_更新操作-->
+    <update id="update">
+        UPDATE employee
+        <!--<set>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="sn!=null">
+                sn = #{sn},
+            </if>
+            <if test="salary!=null">
+                salary = #{salary},
+            </if>
+        </set>-->
+        <trim prefix="SET" suffix="" suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="sn!=null">
+                sn = #{sn},
+            </if>
+            <if test="salary!=null">
+                salary = #{salary},
+            </if>
+        </trim>
+        WHERE id = #{id};
+    </update>
+
+    <!--使用foreach元素_完成批量删除-->
+    <delete id="batchDelete">
+        DELETE FROM employee WHERE id IN
+        <!--
+            foreach元素:
+                collection属性:表示对哪一个集合或数组做迭代
+                       如果参数是数组类型,此时Map的key为array;
+                       如果参数是List类型,此时Map的key为list;
+                open属性:在迭代集合之前,拼接什么符号
+                close属性:在迭代集合之后,拼接什么符号
+                separactor属性:在迭代元素时,每一个元素之间使用什么符号分割开来
+                item属性:被迭代的每一个元素的变量
+                index属性:迭代的索引
+        -->
+        <foreach collection="ids" open="(" close=")" separator="," item="id">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--使用foreach元素_完成批量插入-->
+    <insert id="batchInsert">
+        INSERT INTO employee(id, name, sn, salary, deptId) VALUES
+        <foreach collection="emps" separator="," item="e">
+            (#{e.id}, #{e.name}, #{e.sn}, #{e.salary}, #{e.deptId})
+        </foreach>
+    </insert>
+
+</mapper>

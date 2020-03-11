@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.mapper.UserMapper">
+    <!--
+        select元素: 专门用来做查询的SQL
+            -id属性: 唯一标识,用来标识某一条SQL语句
+            -parameterType属性: 表示执行该SQL语句需要的参数的类型(建议不写),MyBatis可以自行推断出来
+            -resultType属性: 把结果集中每一行数据封装成什么类型的对象
+    -->
+    <select id="getUserList" resultType="com.sunny.domain.Student">
+        SELECT * FROM user;
+    </select>
+
+    <!-- #{id} 相当于在测试方法中selectOne传递过来的值 -->
+    <select id="getUser" parameterType="int" resultType="com.sunny.domain.Student">
+        SELECT * FROM user WHERE id = #{id};
+    </select>
+
+    <update id="updateUser" parameterType="com.sunny.domain.Student">
+        UPDATE user SET name = #{name}, pwd = #{pwd} WHERE id = #{id};
+    </update>
+
+    <!--
+        这里的parameterType可以不写
+        insert元素:
+            useGeneratedKeys属性: 是否需要返回自动生成的主键
+            keyProperty: 把自动生成的主键值设置到对象的哪一个属性上
+    -->
+
+    <insert id="insertUser" parameterType="com.sunny.domain.Student" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (id, name, pwd) VALUES (null , #{name}, #{pwd});
+    </insert>
+
+    <delete id="deleteUser" parameterType="int">
+        DELETE FROM user WHERE id = #{id};
+    </delete>
+
+</mapper>

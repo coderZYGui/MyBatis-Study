@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.mapper.DepartmentMapper">
+
+        <resultMap id="BaseResultMap" type="Department">
+            <result column="id" property="id"/>
+            <result column="name" property="name"/>
+            <!-- 针对单一对象的属性,我们使用association元素-->
+            <!-- 针对集合类型的属性,我们使用collection元素-->
+            <collection property="emps"
+                select="com.sunny.mapper.EmployeeMapper.getUsersByDeptId"
+                column="id"
+            />
+        </resultMap>
+
+        <!--根据部门id查询部门信息-->
+        <select id="getDeptById" resultMap="BaseResultMap">
+            SELECT id, name FROM department2 WHERE id = #{id}
+        </select>
+
+
+
+    <!-- 手动完成 额外SQL的操作 -->
+    <!--<select id="getDeptById" resultType="Department">
+            SELECT id, name FROM department2 WHERE id = #{id}
+    </select>-->
+
+
+    <!--保存部门,要生成部门ID,因为在员工表中要使用到部门的主键ID,作为外键-->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO department2(name) VALUES (#{name})
+    </insert>
+
+
+</mapper>

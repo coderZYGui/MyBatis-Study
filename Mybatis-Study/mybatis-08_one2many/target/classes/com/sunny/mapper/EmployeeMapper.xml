@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间,类似包的概念: namespace:绑定一个对应的Dao/Mapper接口-->
+<mapper namespace="com.sunny.mapper.EmployeeMapper">
+
+
+    <!--根据部门ID来查询部门的员工的信息-->
+    <select id="getUsersByDeptId" resultType="Employee">
+        SELECT id, name, dept_id AS deptId FROM employee2 WHERE dept_id = #{deptId}
+    </select>
+
+
+    <!--保存员工信息-->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        <!--save方法中的参数emp对象中取属性-->
+        INSERT INTO employee2(name, dept_id) VALUES (#{name}, #{deptId})
+    </insert>
+
+
+</mapper>
